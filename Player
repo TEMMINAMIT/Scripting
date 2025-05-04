@@ -1,0 +1,33 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEditor.SceneManagement;
+
+public class Player : MonoBehaviour
+{
+    //Хранилище переменных класса Player
+    private int health = 10;
+
+    public GameObject fireballPrefab;
+
+    public Transform attackPoint;
+
+    //Остальной код класса Player
+    public void TakeDamage(int damage)
+    {
+        health -= damage;
+
+        print($"Здоровье равно: {health}");
+
+    }
+
+    void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Instantiate(fireballPrefab, 
+                attackPoint.position, attackPoint.rotation);
+        }
+    }
+
+}
