@@ -12,14 +12,10 @@ public class Player : MonoBehaviour
 
     public Transform attackPoint;
 
+    public int coins;
+
     //Остальной код класса Player
-    public void TakeDamage(int damage)
-    {
-        health -= damage;
-
-        print($"Здоровье равно: {health}");
-
-    }
+    
 
     void Update()
     {
@@ -30,4 +26,16 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void TakeDamage(int damage)
+    {
+        health -= damage;
+
+        print($"Здоровье равно: {health}");
+
+    }
+
+    public void CollectCoins()
+    {
+        coins++;
+    }
 }
