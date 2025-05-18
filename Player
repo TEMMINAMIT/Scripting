@@ -1,41 +1,66 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor.SceneManagement;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
-    //Хранилище переменных класса Player
+    //Хранилище переменных:
+
+    //Текущее здоровье игрока
     private int health = 10;
 
-    public GameObject fireballPrefab;
+    //Число собранных монет
+    private int coins;
 
+    //Префаб огненного шара и параметр Transform точки атаки
+    public GameObject fireballPrefab;
     public Transform attackPoint;
 
-    public int coins;
 
-    //Остальной код класса Player
-    
+    //Компонент, отвечающий за проигрывание звуков
+    public AudioSource audioSource;
 
-    void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Instantiate(fireballPrefab, 
-                attackPoint.position, attackPoint.rotation);
-        }
-    }
+    //Звуковой файл, содержащий звуковой эффект нанесения урона
+    public AudioClip damageSound;
 
+    //Остальной код:
+
+    //Метод, обрабатывающий нанесённый урон
     public void TakeDamage(int damage)
     {
         health -= damage;
 
-        print($"Здоровье равно: {health}");
-
+        //Если здоровье ещё есть, то проигрывается звук нанесения урона
+        if (health > 0)
+        {
+            audioSource.PlayOneShot(damageSound);
+            print("Здоровье игрока: " + health);
+        }
+        //Если здоровья нет, то перезапускается текущая сцена
+        else
+        {
+            int sceneIndex = SceneManager.GetActiveScene().buildIndex;
+            SceneManager.LoadScene(sceneIndex);
+        }
     }
 
+    //Метод, увеличивающий число монеток
     public void CollectCoins()
     {
         coins++;
+        print("Собранные монетки: " + coins);
+    }
+
+
+    void Update()
+    {
+
+        //Если игрок кликает левой кнопкой мыши, то создаётся огненный шар
+        if (Input.GetMouseButtonDown(0))
+        {
+            Instantiate(fireballPrefab, attackPoint.position, attackPoint.rotation);
+        }
+
     }
 }
