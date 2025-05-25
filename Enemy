@@ -1,0 +1,35 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Enemy : MonoBehaviour
+{
+    //Скорость противника
+    public float speed;
+
+    //Параметры Transform цели к которой движется враг
+    public Transform target;
+
+    //Урон наносимый игроком
+    public int playerDamage = 2;
+
+    
+    void Update()
+    {
+        //Меняем позицию врага каждый кадр на новую
+        transform.position = Vector3.MoveTowards(transform.position,
+            target.position, speed * Time.deltaTime);
+        //Разворачивает каждый кадр врага к позиции цели
+        transform.LookAt(target.position);
+    }
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Player")
+        {
+            Player player = other.GetComponent<Player>();
+            player.TakeDamage(playerDamage);
+        }
+    }
+
+
+}
